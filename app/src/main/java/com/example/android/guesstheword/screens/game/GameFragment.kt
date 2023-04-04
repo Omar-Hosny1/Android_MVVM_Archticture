@@ -35,7 +35,6 @@ import com.example.android.guesstheword.databinding.GameFragmentBinding
  */
 class GameFragment : Fragment() {
     private lateinit var viewModel: GameViewModel
-
     private lateinit var binding: GameFragmentBinding
 
     override fun onCreateView(
@@ -53,21 +52,11 @@ class GameFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
 
-        binding.correctButton.setOnClickListener { viewModel.onCorrect() }
-
-        binding.skipButton.setOnClickListener { viewModel.onSkip() }
-
+        binding.gameViewModel = viewModel
+        binding.setLifecycleOwner(this)
 
         viewModel.onTick.observe(viewLifecycleOwner, Observer { currentTime ->
             binding.timerText.text = currentTime
-        })
-
-        viewModel.score.observe(viewLifecycleOwner, Observer { newScore: Int ->
-            binding.scoreText.text = newScore.toString()
-        })
-
-        viewModel.word.observe(viewLifecycleOwner, Observer { newWord: String ->
-            binding.wordText.text = newWord
         })
 
         viewModel.eventGameFinished.observe(viewLifecycleOwner, Observer { gameFinished ->
